@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laerte Bemm: Matemática e Álgebra Abstrata</title>
+<meta name="description" content="Página de Laerte Bemm, professor de Matemática da UEM: ferramentas interativas de álgebra e matemática financeira, e publicações.">
+<style>
+:root{
+  --papel:#eef3ef; --tinta:#13231f; --suave:#4d625b; --linha:#c5d3cc;
+  --acento:#0e6a5a; --ouro:#b7791f;
+  --serifa:"Iowan Old Style","Palatino Linotype",Palatino,"URW Palladio L",Cambria,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:1rem}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--serifa);font-size:1.0625rem;line-height:1.65}
+a{color:var(--acento);text-underline-offset:.18em}
+a:hover{color:var(--ouro)}
+:focus-visible{outline:3px solid var(--acento);outline-offset:3px}
+.pular{position:absolute;left:-999px;top:0;background:var(--tinta);color:#fff;padding:.5rem 1rem}
+.pular:focus{left:0;z-index:10}
+main,footer{max-width:62rem;margin:0 auto;padding:0 1.5rem}
+.topo{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:3rem;align-items:center;padding:4.5rem 0 3.5rem}
+h1{margin:0 0 .6rem;font-size:clamp(2.7rem,8vw,4.9rem);line-height:1;font-weight:500;letter-spacing:-.025em}
+.papel{margin:0;font-family:var(--sans);font-size:1.05rem;color:var(--suave);max-width:30ch;line-height:1.5}
+.nav{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:1.75rem;font-family:var(--sans);font-size:.95rem}
+h2{margin:0 0 1rem;font-size:1.6rem;font-weight:500;letter-spacing:-.01em}
+h3{margin:2rem 0 .25rem;font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--acento)}
+section{padding:2.5rem 0;border-top:1px solid var(--linha)}
+p{margin:.6rem 0;max-width:68ch}
+
+/* tabela de Cayley */
+.cayley{font-family:var(--sans)}
+.cayley table{border-collapse:separate;border-spacing:3px;width:100%;table-layout:fixed}
+.cayley th{font-weight:600;font-size:.8rem;color:var(--suave);padding:.15rem 0;text-align:center}
+.cayley td{aspect-ratio:1;text-align:center;font-size:clamp(.8rem,2.4vw,1.05rem);border-radius:3px;cursor:default;color:var(--tinta);transition:outline-color .12s}
+.cayley td.on{outline:2px solid rgba(19,35,31,.35);outline-offset:-2px}
+.cayley td.sel{outline:3px solid var(--tinta);outline-offset:-3px;font-weight:700}
+.cayley .legenda{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;justify-content:space-between;margin-top:.7rem;font-size:.9rem;color:var(--suave)}
+.cayley select{font:inherit;padding:.2rem .4rem;border:1px solid var(--suave);border-radius:4px;background:#fff;color:var(--tinta)}
+.cayley output{display:block;min-height:1.6em;margin-top:.5rem;font-size:1rem;color:var(--tinta)}
+
+/* dia da semana */
+.data{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--linha)}
+.data label{display:block;font-size:.9rem;color:var(--suave);margin-bottom:.4rem}
+.data .linha{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem}
+.data input{width:9.5rem;font:inherit;font-size:1.05rem;padding:.45rem .6rem;border:1px solid var(--suave);border-radius:4px;background:#fff;color:var(--tinta)}
+.data output{font-family:var(--serifa);font-size:1.6rem;line-height:1.2;letter-spacing:-.01em;color:var(--tinta)}
+.data output.aviso{font-family:var(--sans);font-size:.95rem;letter-spacing:0;color:var(--suave)}
+.data .nota{margin:.6rem 0 0;font-size:.85rem;color:var(--suave);max-width:none}
+
+/* cadernos de estudos */
+.busca{margin:1rem 0 1.25rem;font-family:var(--sans)}
+.busca label{display:block;font-size:.9rem;color:var(--suave);margin-bottom:.3rem}
+.busca input{width:100%;max-width:22rem;font:inherit;font-size:1rem;padding:.45rem .6rem;border:1px solid var(--suave);border-radius:4px;background:#fff;color:var(--tinta)}
+.caderno{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+.caderno summary{cursor:pointer;padding:.9rem 0;font-size:1.25rem;font-weight:500}
+.caderno summary .qtd{margin-left:.6rem;font-family:var(--sans);font-size:.9rem;font-weight:400;color:var(--suave)}
+.aulas{list-style:none;margin:0 0 1rem;padding:0}
+.aulas li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1.5rem;align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--linha)}
+.aulas li:last-child{border-bottom:0}
+.aulas .rot{color:var(--suave)}
+.aulas .links{display:flex;gap:1.1rem;font-family:var(--sans);font-size:.95rem}
+@media (max-width:48rem){.aulas li{grid-template-columns:1fr}}
+
+/* ferramentas */
+.obras{list-style:none;margin:0;padding:0}
+.obras li{display:grid;grid-template-columns:minmax(0,17rem) minmax(0,1fr);gap:.2rem 2rem;padding:.9rem 0;border-bottom:1px solid var(--linha)}
+.obras a{font-size:1.2rem;font-weight:500}
+.obras span{color:var(--suave)}
+.pub{margin:0 0 1.1rem;max-width:68ch}
+.pub cite{font-style:italic}
+footer{padding-top:1rem;padding-bottom:3rem;color:var(--suave);font-size:.95rem;border-top:1px solid var(--linha)}
+footer p{margin:.2rem 0}
+
+@media (max-width:48rem){
+  .topo{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0 2rem}
+  .obras li{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#ferramentas">Pular para as ferramentas</a>
+<main>
+  <header class="topo">
+    <div>
+      <h1>Laerte Bemm</h1>
+      <p class="papel">Professor de Matemática na Universidade Estadual de Maringá, com foco em Álgebra Abstrata.</p>
+      <nav class="nav" aria-label="Seções da página">
+        <a href="#sobre">Sobre</a>
+        <a href="#ferramentas">Ferramentas</a>
+        <a href="#publicacoes">Publicações</a>
+        <a href="#canal">Canal</a>
+        <a href="#cadernos">Cadernos</a>
+      </nav>
+    </div>
+    <div class="cayley">
+      <table id="tabela" aria-label="Tabela de somas do grupo Z_n"></table>
+      <output id="conta" aria-live="polite">Passe o mouse (ou toque) em uma célula.</output>
+      <div class="legenda">
+        <span>Tabela de somas de ℤₙ</span>
+        <label>n = <select id="n" aria-label="Valor de n"></select></label>
+      </div>
+      <div class="data">
+        <label for="data">Que dia da semana foi? Digite uma data a partir de 01/03/1600.</label>
+        <div class="linha">
+          <input id="data" type="text" inputmode="numeric" autocomplete="off" placeholder="24/03/1722" aria-describedby="dia">
+          <output id="dia" class="aviso" for="data" aria-live="polite">Formato: dd/mm/aaaa</output>
+        </div>
+        <p class="nota">O cálculo usa aritmética módulo 7, como a tabela acima com n = 7.</p>
+        <p class="nota">A fórmula está deduzida no artigo <cite>Aplicação de Aritmética Modular no Calendário</cite>, de Laerte Bemm, Guilherme Liegel Leopold e Priscila C. F. de Jesus Bemm (Jornal Eletrônico de Ensino e Pesquisa de Matemática, v. 6, n. 1, 2022, p. 1–15). <a href="https://jeepema.com.br/index.php/jeepema/pt_BR/article/view/36/pdf">Ler o artigo (PDF)</a></p>
+      </div>
+    </div>
+  </header>
+
+  <section id="sobre">
+    <h2>Sobre</h2>
+    <p>Professor Associado do Departamento de Matemática da Universidade Estadual de Maringá (UEM), com atuação nas áreas de Álgebra e Educação Matemática. Possui graduação em Matemática pela Universidade Federal de Santa Maria (UFSM), mestrado em Matemática pela UEM, com ênfase em teoria de grupos solúveis, e doutorado em Matemática pela Universidade Federal do Rio Grande do Sul (UFRGS), com foco em Ações Parciais.</p>
+    <p>A pesquisa concentra-se na teoria de ações parciais e suas aplicações em estruturas algébricas, incluindo anéis semiprimos, anéis de Martindale e mais recentemente em Álgebras Booleanas. Alguns trabalhos foram publicados em periódicos de referência, como Journal of Algebra, Journal of Pure and Applied Algebra e Communications in Algebra, abordando temas como globalização de ações parciais, propriedades de anéis de Goldie e aspectos cohomológicos de graduações.</p>
+    <p>Além da pesquisa em álgebra, desenvolve investigações em Matemática Financeira e no uso de Inteligência Artificial aplicada tanto à álgebra quanto aos processos de ensino e aprendizagem, com ênfase na integração entre rigor teórico e inovação pedagógica.</p>
+    <p>No âmbito institucional, participa de projetos de pesquisa e extensão, com destaque para o projeto “Ações Parciais sobre Álgebras Booleanas” e iniciativas como o Núcleo de Inserção Profissional (NIP/UEM) e o “Kit de sobrevivência à Matemática”, voltados ao apoio à formação acadêmica, à permanência estudantil e inserção dos estudantes da UEM no mercado de trabalho.</p>
+    <p>Destaca-se também pela criação e desenvolvimento do “Canal da Álgebra Abstrata”, concebido como um projeto de impacto educacional voltado à democratização do acesso ao conhecimento matemático. O canal reúne conteúdos organizados em playlists que abrangem diferentes áreas, como Álgebra, Cálculo, Equações Diferenciais Ordinárias e Matemática Financeira, e funciona como uma extensão do ambiente de ensino, alcançando estudantes para além da sala de aula e contribuindo para sua formação acadêmica de maneira contínua, acessível e gratuita.</p>
+    <p>Na docência, atua na graduação em diversos cursos e na pós-graduação, com orientação de mestrado nos programas Profmat e PMA da UEM. Sua prática docente é orientada pela articulação entre profundidade conceitual, clareza didática e uso estratégico de tecnologias digitais.</p>
+  </section>
+
+  <section id="ferramentas">
+    <h2>Ferramentas interativas</h2>
+    <p>Aplicativos que rodam no navegador, feitos para explorar e conferir resultados em sala de aula e nos estudos.</p>
+
+    <h3>Álgebra</h3>
+    <ul class="obras">
+      <li><a href="https://lbemm3.github.io/subgrupos-de-sylow/">Subgrupos de Sylow</a><span>Dada a ordem de um grupo, mostra quais subgrupos de Sylow são necessariamente normais e quando o grupo não é simples.</span></li>
+      <li><a href="https://lbemm3.github.io/equacoes-diofantinas/">Equações diofantinas em ℤ[i]</a><span>Resolve aX + bY = c nos inteiros gaussianos, com algoritmo de Euclides, constantes de Bézout e solução geral.</span></li>
+      <li><a href="https://lbemm3.github.io/polinomios-irredutiveis/">Polinômios irredutíveis de grau 3</a><span>Gera e verifica polinômios irredutíveis em ℚ[x] pelos algarismos dos coeficientes, sem fatorar.</span></li>
+      <li><a href="https://lbemm3.github.io/acoes-parciais/">Ações parciais de Cₙ</a><span>Constrói ações parciais de grupos cíclicos sobre conjuntos finitos e entrega o documento em LaTeX.</span></li>
+    </ul>
+
+    <h3>Matemática financeira</h3>
+    <ul class="obras">
+      <li><a href="https://lbemm3.github.io/calculadora-sacre/">Calculadora SACRE</a><span>Simula o financiamento imobiliário pelo SACRE e compara amortizações extraordinárias.</span></li>
+      <li><a href="https://lbemm3.github.io/Renda-Fixa-com-Aportes/">Renda fixa com aportes</a><span>Simula a evolução de um investimento em renda fixa com aportes periódicos.</span></li>
+    </ul>
+  </section>
+
+
+  <section id="publicacoes">
+    <h2>Publicações</h2>
+    <p class="pub">Bemm, L.; Lautenschlaeger, W. G.; Tamusiunas, T. (2026). <cite>Groupoid twisted partial actions</cite>. Boletín de la Sociedad Matemática Mexicana, v. 32, art. 92. <a href="https://link.springer.com/article/10.1007/s40590-026-00923-z">Ler o artigo</a></p>
+    <p class="pub">Bemm, L.; Leopold, G. L.; Bemm, P. C. F. J. (2022). <cite>Aplicação de Aritmética Modular no Calendário</cite>. Jornal Eletrônico de Ensino e Pesquisa de Matemática, v. 6, n. 1, p. 1–15. <a href="https://jeepema.com.br/index.php/jeepema/pt_BR/article/view/36/pdf">Ler o artigo (PDF)</a></p>
+    <p class="pub">Bemm, L.; Bemm, P. C. F. J. (2021). <cite>Classes de Polinômios Irredutíveis de graus 3 em Q[x]</cite>. REMAT: Revista Eletrônica da Matemática, IFRS. <a href="https://periodicos.ifrs.edu.br/index.php/REMAT/article/view/4212">Ler o artigo</a></p>
+    <p class="pub">Bemm, L. (2020). <cite>Equações Diofantinas sobre Domínios Euclidianos</cite>. REMAT: Revista Eletrônica da Matemática, IFRS. <a href="https://periodicos.ifrs.edu.br/index.php/REMAT/article/view/4150">Ler o artigo</a></p>
+    <p class="pub">Bemm, L.; Fornaroli, E. Z.; Santulo Jr., E. A. (2019). <cite>A cohomological point of view on gradings on algebras with multiplicative basis</cite>. Journal of Pure and Applied Algebra, v. 223, n. 2, p. 769–782. <a href="https://www.sciencedirect.com/science/article/pii/S0022404918301051">Ler o artigo</a></p>
+    <p class="pub">Bemm, L.; Cortes, W. (2018). <cite>Ring theoretic properties of partial crossed products and related themes</cite>. Journal of Algebra, v. 493, p. 267–296. <a href="https://www.sciencedirect.com/science/article/pii/S0021869317305173">Ler o artigo</a></p>
+    <p class="pub">Bemm, L.; Cortes, W.; Della Flora, S.; Ferrero, M. (2015). <cite>Partial crossed products and Goldie rings</cite>. Communications in Algebra, v. 43, n. 9, p. 3705–3724. <a href="https://www.tandfonline.com/doi/abs/10.1080/00927872.2014.923895">Ler o artigo</a></p>
+    <p class="pub">Bemm, L.; Ferrero, M. (2013). <cite>Globalization of partial actions on semiprime rings</cite>. Journal of Algebra and Its Applications, v. 12, n. 4, 1250202. <a href="https://doi.org/10.1142/S0219498812502027">Ler o artigo</a></p>
+  </section>
+
+  <section id="canal">
+    <h2>Canal da Álgebra Abstrata</h2>
+    <p>Conteúdos organizados em playlists de Álgebra, Cálculo, Equações Diferenciais Ordinárias e Matemática Financeira, de acesso gratuito para quem quer estudar dentro ou fora da sala de aula.</p>
+    <p><a href="https://www.youtube.com/@canaldaalgebraabstrata">Acessar o canal no YouTube</a></p>
+  </section>
+  <section id="cadernos">
+    <h2>Cadernos de estudos</h2>
+    <p>Videoaulas do canal reunidas por caderno, com os slides de cada aula no Google Drive, de onde podem ser baixados.</p>
+    <div class="busca">
+      <label for="busca">Buscar aula</label>
+      <input id="busca" type="search" placeholder="Ex.: Lagrange" autocomplete="off">
+    </div>
+    <div id="lista-cadernos"></div>
+    <p id="sem-resultado" class="nota" hidden>Nenhuma aula encontrada.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Universidade Estadual de Maringá, Departamento de Matemática.</p>
+  <p>As ferramentas têm fins didáticos e não substituem a conferência formal dos resultados.</p>
+</footer>
+
+<script>
+/* Dia da semana a partir de 01/03/1600 (calendário gregoriano). Ano contado a partir de março. */
+var NOMES_DIA=['Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo','Segunda-feira','Terça-feira'];
+var DESLOC_MES=[0,5,1,0,3,5,1,3,6,2,4,0,2]; /* índice = mês (1 a 12) */
+function bissexto(a){return (a%4===0&&a%100!==0)||a%400===0;}
+function diasNoMes(a,m){return [31,bissexto(a)?29:28,31,30,31,30,31,31,30,31,30,31][m-1];}
+function diaSemana(ano,mes,dia){
+  var A=(mes<3)?ano-1601:ano-1600;
+  var B=Math.floor(A/4)-Math.floor(A/100)+Math.floor(A/400);
+  return NOMES_DIA[(A+B+dia-1+DESLOC_MES[mes])%7];
+}
+function resolverData(texto){
+  var m=/^\s*(\d{1,2})\s*[\/.\-]\s*(\d{1,2})\s*[\/.\-]\s*(\d{4})\s*$/.exec(texto);
+  if(!m) return {aviso:'Formato: dd/mm/aaaa'};
+  var d=parseInt(m[1],10), mes=parseInt(m[2],10), a=parseInt(m[3],10);
+  if(mes<1||mes>12||d<1||d>diasNoMes(a,mes)) return {aviso:'Essa data não existe.'};
+  if(a<1600||(a===1600&&mes<3)) return {aviso:'Use uma data a partir de 01/03/1600.'};
+  return {dia:diaSemana(a,mes,d)};
+}
+(function(){
+  var campo=document.getElementById('data'), saida=document.getElementById('dia');
+  function atualizar(){
+    var r=resolverData(campo.value);
+    if(r.dia){saida.textContent=r.dia;saida.className='';}
+    else{saida.textContent=campo.value.trim()===''?'Formato: dd/mm/aaaa':r.aviso;saida.className='aviso';}
+  }
+  campo.addEventListener('input',atualizar);
+})();
+(function(){
+  var tb=document.getElementById('tabela'), sel=document.getElementById('n'), out=document.getElementById('conta'), n=7, cel=[];
+  for(var k=3;k<=9;k++){var o=document.createElement('option');o.value=k;o.textContent=k;if(k===n)o.selected=true;sel.appendChild(o);}
+  function cor(c){var h=172-c*(130/(n-1));return 'hsl('+h+',42%,80%)';}
+  function limpar(){cel.forEach(function(r){r.forEach(function(td){td.classList.remove('on','sel');});});}
+  function destacar(i,j){
+    limpar();
+    for(var k=0;k<n;k++){cel[i][k].classList.add('on');cel[k][j].classList.add('on');}
+    cel[i][j].classList.add('sel');
+    out.textContent=i+' + '+j+' ≡ '+((i+j)%n)+' (mod '+n+')';
+  }
+  function montar(){
+    tb.textContent='';cel=[];
+    var cab=tb.insertRow(),v=document.createElement('th');v.textContent='+';cab.appendChild(v);
+    for(var j=0;j<n;j++){var th=document.createElement('th');th.scope='col';th.textContent=j;cab.appendChild(th);}
+    for(var i=0;i<n;i++){
+      var tr=tb.insertRow(),rh=document.createElement('th');rh.scope='row';rh.textContent=i;tr.appendChild(rh);cel[i]=[];
+      for(var j2=0;j2<n;j2++){
+        var td=tr.insertCell(),c=(i+j2)%n;td.textContent=c;td.style.background=cor(c);td.tabIndex=0;
+        (function(a,b){
+          td.addEventListener('mouseenter',function(){destacar(a,b);});
+          td.addEventListener('focus',function(){destacar(a,b);});
+          td.addEventListener('click',function(){destacar(a,b);});
+        })(i,j2);
+        cel[i][j2]=td;
+      }
+    }
+    out.textContent='Passe o mouse (ou toque) em uma célula.';
+  }
+  sel.addEventListener('change',function(){n=parseInt(sel.value,10);montar();});
+  tb.addEventListener('mouseleave',limpar);
+  montar();
+})();
+</script>
+<script>
+var CADERNOS=[{"nome":"Teoria de Grupos","aulas":[["Módulo 1","Parte I","Definição de Grupo","w4o306FH0Tc","1j6AizUiZkXUmQ0MsDtX_tv9pIfHLzCeo"],["Módulo 1","Parte II","Exemplos de Grupos","XyoS9_v6aKU","1kft-678VTDgOpu5cHhu7ZS40QiLkB-p4"],["Módulo 1","Parte III","Grupos de Simetria e Grupos Diedrais","91R1TDh9bKw","1uD6qm3YRQxWELILJOn7poEPmp_vwDGgo"],["Módulo 2","Parte I","Propriedades Elementares dos Grupos","zkpNaogxOH8","15_QwGRYBUpwJdQcBEBQXZiNa_9niA0uR"],["Módulo 2","Parte II","Potenciação em Grupos","wS9Yy6nM8ko","1Pz0fuFnODKp39tH1xcM9i1fVO80d3qC0"],["Módulo 2","Parte III","Produto Direto de Grupos","8WR5oiNBLxo","1I0jKc9htUBj4WKF_MY0j0WL3HAsCz2PF"],["Módulo 3","Parte I","Grupos de Permutações: Uma Introdução","On8WOMWvWG0","1HTVu5f_E92BkgoEcukRsj3qXXWfyDwGW"],["Módulo 3","Parte II","Grupos de Permutações: Ciclos","AE5ACJs9hGM","1jUlz1ibs-OaijDMF_D1u8AJQP2luiPAU"],["Módulo 4","","Subgrupos","cTafQZWx7Xs","1gN_OS18QiQNilV3TGc-rcURN8uVDlx5c"],["Módulo 5","Parte I","Centro de Um Grupo. União e Interseção de Subgrupos","6r6IpMR-58k","1nQSA29wFq6Nzc1VStq4hsDEQEuXpbx0i"],["Módulo 5","Parte II","Produto de Subgrupos","dOfnKSkqvMg","122vKdaF8Cl_ERp5LXLNXfy-EmLE9Ziw0"],["Módulo 6","Parte I","Subgrupos Gerados","kpr0WlnMjeQ","133WOD59UlUpBAgbb1l4-btmJtj8leUrM"],["Módulo 6","Parte II","Exemplos de Subgrupos Gerados","fbZjQIoBWsY","1BcFqK2MkdIiY1qmLzF0XFVnmEaRCy5fW"],["Módulo 6","Parte III","Ordem de Elementos de Um Grupo","J_ZTIM3h454","1O2AYCcdEIDwJBiecY928pfpq2NwbldIz"],["Módulo 7","Parte I","Relações de Equivalência","lsJddX3pq4A","1kCNnhP2hzphlrz6rMsxy0mcErtV72ot1"],["Módulo 7","Parte II","Duas Relações de Equivalência em Um Grupo","GredXjY2UKg","1RSEUYx-RPkk-Dvsb6L2vO_eGp60267d4"],["Módulo 7","Parte III","O Teorema de Lagrange","JTHy04dk7vs","1ZmMWpyMsy1XsQxfi-LPvIMhEzzk7lnnE"],["Módulo 8","","Aplicações e Consequências do Teorema de Lagrange","asQDxzXa7rM","1_aR4rMEr-znjTREiPjGX29E5KceKBwF_"],["Módulo 9","Parte I","Subgrupos Normais: Motivação, Definição e Exemplos","tbNIrgGxETE","14pQ5WRD5jNrs2IHER5mqDVvjRw36Ih1I"],["Módulo 9","Parte II","Subgrupos Normais: Caracterização e Grupo Quociente","_oZoKIhD33k","1HW7RwsWfp7ycccobTvKSjO3EoKdnF7zQ"],["Módulo 10","Parte I","Homomorfismos: Definição e Exemplos","iKmQIWJ__Fc","1f5UgaVIqSuY7TdYK0ZpRePLBEcsV6xEf"],["Módulo 10","Parte II","Homomorfismos: Propriedades Elementares, Núcleo e Imagem","lWXR_0vZOa4","1AlcUv15SxdZz7gs_JAv1mux5nKc3QeQD"],["Módulo 10","Parte III","Homomorfismos: Mais Propriedades Elementares","YaEbn_XsC3g","1stN631ReWW73lIDqLNBco2TTjIRjaaDE"],["Módulo 11","Parte I","Classificação dos Grupos Cíclicos","20NWdYoaQkE","111F9ccRzT0FHO0MN03DJpccI49ZIiRPH"],["Módulo 11","Parte II","Teorema Fundamental do Homomorfismo","rlHhKDqYxjk","1gGN2uK1s9iJRzwftlT47e6Ha74p73Ajq"],["Módulo 11","Parte III","O Teorema da Representação","829mLKvghIA","14j-sPJCIV-gsltVzkpC6svQ85mTN6qDw"],["Módulo 12","Parte I","Grupo de Permutação: Uma Breve Revisão","NM180ZaL--A","1cwsmjk1D9nydIw4Zywn8r0bVHALda1ku"],["Módulo 12","Parte II","Ciclos Disjuntos","Hc1mdS9bZwg","1xselLNnvBmuxClmBSq5ADXJCRBwfoWfF"],["Módulo 12","Parte III","Permutações Pares e Ímpares","x2kerrK5SPM","1V2CObd_weZ1GXs4s572duqd2qTo0e8Uh"],["Módulo 13","Parte I","Produtos Diretos de Grupos","Mj1qnlhEGyY","1aBEtkeSkDVZVMD4zDTf1MZByPlcoaCiu"],["Módulo 13","Parte II","Produto Direto de Grupos: Aplicações","7TYm3N919HQ","1cF_6GxAg9R-B9Wwv1o_w1_BkVNRRhtpw"],["Módulo 14","Parte I","Imagem Inversa de Subgrupos","JJnbd40fddI","1aQ7kW5Yx6skcbczQtY9beDI7tI498Jgm"],["Módulo 14","Parte II","Teorema da Correspondência de Subgrupos","8CWMFg0k2UM","1ETn56aWqkuhICjKqKvHApheKOltTKSmT"],["Módulo 15","Parte I","Ações de Grupos: Definição Clássica e Exemplos","bXnRN9Tbq04","18ylW0hiq3rcqbb3d6zVdXN_vN9e2g7AM"],["Módulo 15","Parte II","Ações de Grupos: Definição Alternativa","tYhKFtL0jdo","1dSADEbZPYpXWP6M9gceHj8X6_sgVhRCU"],["Módulo 16","Parte I","Teorema de Cayley e Teorema da Representação","thHHyNbu0f0","1QKwaT___ZvUIbsdIgP-diEPs2BhAAJPz"],["Módulo 16","Parte II","Aplicações Práticas do Teorema da Representação","t6bZ4ItSkzM","1XxHkHPYW1AcdmzijhdyMhkKTnkLb1i8A"],["Módulo 17","Parte I","Estabilizadores, Órbitas e Equação das Classes","KH9GkTxiL6c","1DXeKlVUCGsVcqCaXuOD0SP69gwaLkyZ8"],["Módulo 17","Parte II","Consequências da Equação das Classes","G4kVQVBvoww","1Yo45b3OFUJzqctP9iIUA3mMDAis_8TvN"],["Módulo 18","","Teorema de Cauchy: Uma Recíproca Fraca do Teorema de Lagrange","byW2aG6jwBI","1dBaOGs79bKAJrZZxylh8pQiWjfCkeGCe"],["Módulo 19","Parte I","O Primeiro Teorema de Sylow","i_5-bQUHo0U","1WZYMqVawJ6sWZKExKVU18gkf6jFjZhif"],["Módulo 19","Parte II","O Segundo Teorema de Sylow","cBxp2JcDi1s","1daRGe1LipOGzco-OFiv1K3EkDcd0Ux05"],["Módulo 19","Parte III","O Terceiro Teorema de Sylow","QFDMSN7x_Bs","1di10Oj3YJXDN0kBpsM8iY0cKdk7sRA6P"],["Exercícios resolvidos","Exercício 1","Em Grupos de Ordem 72 e 63 Há Subgrupos Normais Não Triviais","DNPFriXrmRw","1MTXEIhUKeAyyYOex1_mlivxixgYktoBW"],["Exercícios resolvidos","Exercício 2","Em Grupos de Ordem 56 Há Subgrupos Normais Não Triviais","cDEo1Jmdca0","1QwoxC6jZS8u6kiAbB5M0skI8IDdnl5I-"],["Exercícios resolvidos","Exercício 3","Grupos de Ordens 33, 35 e 65 são Cíclicos","yg5YRydCLhU","1SSvp6ttApMq80wo4t-IUa9D7YVnVK987"],["Exercícios resolvidos","Exercício 4","Todo grupo de ordem 11^2·13^2 é abeliano","F0W2NlNDXJU","1V98yeWHbvtU_EYYH4LDJvEs63_3sa_lb"],["Exercícios resolvidos","Exercício 5","Ordem de Elementos","SCrDaqqOBjY","1uO7glCfVaAjVAtmYiklrQuHGUOMJyP5E"],["Exercícios resolvidos","Exercício 6","Homomorfismo de Grupos","DdS4XsCMslA","1hJk1DSAglI1D6P6dSpn5wVihwUFU699q"],["Exercícios resolvidos","Exercício 7","Automorfismo de Grupos Finitos","DO1M1HBSwFw","1d5DgQwUhew_gwMlUjfNcTXgyHA1ZGoEf"]]},{"nome":"Aritmética (MA14)","aulas":[["Módulo 1","Parte I","Relações de Equivalência","lsJddX3pq4A","1kCNnhP2hzphlrz6rMsxy0mcErtV72ot1"],["Módulo 1","Parte II","A Construção dos Inteiros","1utzcyNPgLs","1l-Sf2LKEVKn5hZgTu41o9YdcgKl_Pilw"],["Módulo 2","Parte I","Divisibilidade","TAHInL88ri4","1N3Erwu_xfljO4Y1E9nxR5YiAPc6vW1yD"],["Módulo 2","Parte II","Algoritmo da Divisão Para Números Inteiros","-W0g2dm9bfc","1mcv0Q6zzxPQUg7OJd_lTK7plFVHbYssC"],["Módulo 2","Parte III","Numeração","K6EjyouNdXU","17Zin-0T2HiHVNfCRV4Qa9AzxIzh8GDBk"],["Módulo 3","Parte I","Máximo Divisor Comum: Definição e Exemplos","J_3QK8LBotQ","1rxQ2Pm1B3rN8L_nmbY3cWIY2PiMAPRx_"],["Módulo 3","Parte II","Máximo Divisor Comum e Algoritmo de Euclides","ZOHLuwIiVek","1rLZ0G6mtoyjwHtYsglzgE2lGeEJ2jDRN"],["Módulo 3","Parte III","Máximo Divisor Comum e Teorema de Bézout","FrR12cPviE0","1fkeli1TSJHKmU7tjE6n_jFMyAXyQ3y86"],["Módulo 4","Parte I","Equações Diofantinas: Definição e Existência de Solução","UghEPYepqw4","1EdHnjmCna5b0kq2nLKg-vSbdixUtm732"],["Módulo 4","Parte II","Exemplos e Soluções Gerais de Equações Diofantinas","tylZzzwz4eU","1JC7E-f3cetUXKYixR9cvcrjCrKIsyNE8"],["Módulo 5","Parte I","O Conjunto dos Naturais Como Interseção de Dois Conjuntos Especiais","BmIjkzBGRl8","1cqTJIeWbMWR42zwwomI0-YDaDACpYgdY"],["Módulo 5","Parte II","Existência de Soluções Naturais de Uma Equação Diofantina","IiTMHaGSS0k","1_Noo5lJKEqcyHmBoG_7-7W_ZBgHpI7yD"],["Módulo 5","Parte III","Soluções Naturais de Equações Diofantinas com Coeficientes Naturais","tcezYHpQm1o","1sLcDMsliiCiizO25IfcJr73IOLMIH0Yo"],["Módulo 6","Parte I","O Teorema Fundamental da Aritmética","nSdww9xp0V4","1GCGTwuJ2roOJx3b0qXpGWhP5TcQCyWKg"],["Módulo 6","Parte II","Quantidade de Divisores de um Número Inteiro","n6LmNtYN3Co","1ulc0m-BShRAUyOuUXl_dArds97tpDYY7"],["Módulo 6","Parte III","MMC e MDC via Teorema Fundamental da Aritmética","JombRXfoT30","1SFlLv9OWLcGYGr4dub5UUDzweC9A1Bdy"],["Módulo 6","Parte IV","Expoente da Maior Potência de um Primo que Divide um Número Inteiro","9TIgUCzlLkY","1pH0R0nNvHeKjZVcvIPPy88Dm5FLze2bA"],["Módulo 7","Parte I","O Teorema de Fermat e o Pequeno Teorema de Fermat","iK62vf_pjX4","1ZJrRXtT-CcT4tka4-IzSnwnpqty1f8lE"],["Módulo 8","Parte I","Números de Fermat","4Z63FI5DmQM","1UcJ5iSP1cTnMNSaKWgfkoLBwgZ9qN3X8"],["Módulo 8","Parte II","Primos de Mersenne","MAY_LVJ6Ek4","1KbHLtgXbYQd8HqXCahy0HxarUkwgQ5vp"],["Módulo 8","Parte III","Números Perfeitos","QQB3QxeERcY","1KmOrlOcrkFR78_SAxFpBiQSFLfijNhMW"],["Módulo 8","Parte IV","Relação Entre Números Perfeitos e de Mersenne","zWozEKE8NLQ","1w1jZu4grJymHVMogtdTHfVlXDMPNE7to"],["Módulo 9","","Decomposição da Fatorial em Números Primos","CbbYlb3Ypd4","1k1MU4wHqiUW7OToMyZoVKokyL4zVPo6t"],["Módulo 10","Parte I","Congruência: Definição, Exemplos e Propriedades Elementares","6-m9ojQv9BY","1h_nVWiaNXNZBI2KE4lIW5XnXmg8DgGgX"],["Módulo 10","Parte II","Congruência: Propriedades Não Intuitivas","NmaNN4rvhTQ","18PnWsC4w4aLig6nzo3unTHH0GKDwuKrp"],["Módulo 10","Parte III","Congruência: Um Sistema de Congruência","FcloAlNA1YA","12GtOjRUw9hQF--likR-6cnIBxwt5LIvr"],["Módulo 11","Parte I","Restos de Divisões Via Congruências","uFBsh9l1PrU","1o_ntImGafMf4lxfWP_6vhHGCTLtehc7g"],["Módulo 11","Parte II","Aplicações de Congruência em Restos de Divisões: Aplicação 1","BmlQ0cm6OMc","1IZiD1tcKCW7kL1XYcRF-0BUsTEFDtm79"],["Módulo 11","Parte III","Aplicações de Congruência em Restos de Divisões: Aplicação 2","-Hy1Os-Xl1o","1DzrT2RIoT5QDW15r2sjiht6q4WyGFjVk"],["Módulo 12","","O Inverso Módulo m","YEKWDs7clfM","1_FTEYVgJ5OoHz7E_qxgnBujFW6PWVmx8"],["Módulo 13","Parte I","Sistemas Completo e Reduzido de Resíduos Módulo m","nCJ3wyADWg8","1QUDKGU3EI0r555rysV3ADne47bTCFihy"],["Módulo 13","Parte II","A Função de Euler","1ZnhIkpmQU0","17O5jKlXKOyT2uWc6l1f417l7ZAtqhqfz"],["Módulo 14","Parte I","Como Determinar as Imagens da Função de Euler","O1NzfUpkslA","18QwuGfF-jwRXUivEX9kIdLNCbiQznPRE"],["Módulo 14","Parte II","Aplicações do Teorema de Euler","-ReR_-YomX0","1nEW45kjzMp8Ori8q_OCVOx6-a7z3LZIj"],["Módulo 15","Parte I","Resolução de Equações de Congruências","L5QEWkUwHBE","11G25E3HTKrY6qnYZlfKg1A54KSp1sM97"],["Módulo 15","Parte II","Exemplos de Equações de Congruências","EK8aYK5rxW0","10u-jwcNblo5KBiuTQpOCXcl-La9SM4wD"],["Módulo 15","Parte III","Transformar aX ≡ b mod m, em X ≡ c mod n","LobVCDB9CI4","1-b-gRUqSi2kFGwjJqIjST71xJ1FJQqfu"],["Módulo 16","Parte I","O Problema do Resto Chinês","HuWFRGdV9qw","10HJt0CDUUooAPhThU8C5150LPNZEJM3I"],["Módulo 16","Parte II","O Teorema do Resto Chinês","CPxKou6VLks","10wp26ABzAa2A6lbj0SyuoTPoq_hfVtOz"],["Módulo 16","Parte III","Resolução de Sistemas de Congruências sem o Teorema do Resto Chinês","4mlVfKToQY0","1-2QOZvDpRjd9EM77MbUeBScsx8BTbGq1"],["Módulo 17","","Revisão (Resumo) Sobre Congruências","t7pvY8uOTrc","1RdNDhAUTF65nPcuyAeiuSKXgWkaPlQIx"],["Módulo 18","Parte I","Classes de Equivalência Módulo m","O6eW_41acFA","1SP_Px2J2aeJZ42lwCDj6iDLo5ntb5AtU"],["Módulo 18","Parte II","Álgebra das Classes Residuais Módulo m","o7jq3c4Q1FA","1V0Ph_iXD9H30TP4UQmu1fpwaSjRTQgDJ"],["Módulo 18","Parte III","Resolução de Equações de Congruência Utilizando Classes Residuais","yrfZ9H5y0jE","1X6u7Y61tnRDu77mVOqoHwPqd47SkIsmU"],["Exercícios resolvidos","Exercício 1","","gBg6ZPC18nY","11byqQrR-JhhrT-86MOm31bl09PG3_OJD"],["Exercícios resolvidos","Exercício 2","","r6kmCL6Gu68","1aOAkbMIqXqjS29a-G5fdJ38a5aaEg3YO"],["Exercícios resolvidos","Exercício 3","","-9sAfpVFF4E","1zEdnCgqowlkNOGLOnULBf9NIN2YawkM0"],["Exercícios resolvidos","Exercício 4","","bQQV8HetegQ","1ByMNQMS80F7yymOAIkJyMwp6xD_CPB52"],["Exercícios resolvidos","Exercício 5","","5hq_1kpHx-A","1RlNnNDldfXHYNXicFqUOvGriRCrBR9Ck"],["Exercícios resolvidos","Exercício 6","","Uanqzx_axn0","1XIO7X68i8VmtlW2gTahoQX4yc2PJrARS"],["Exercícios resolvidos","Exercício 7","","__FnPW_eFPk","1GTkNPKgaWwCY4qmP1cAzZJGv-vdK2k12"],["Exercícios resolvidos","Exercício 8","","eBHH5rcyJbM","18dYdeyPxChKbg8zFQlCozdJ8_v08H-Xw"],["Exercícios resolvidos","Exercício 9","","SoXFOB9LY68","1GnYlTeOLbiuu7X6DZcodVvgiQx3xQdka"],["Exercícios resolvidos","Exercício 10","","EwEIOp5e4sI","1pPRzJDo-augTww-PWUGeOVW28WvIVSMM"],["Exercícios resolvidos","Exercício 11","","OH9DxsMj-Gs","1QCkInVUR2B23OHjIZsr5McvGSTkCBuXl"],["Exercícios resolvidos","Exercício 12","","_ktb_-iBwuk","1UiB6tCcHUEw6lEs4h4bZw3C78rD30718"],["Exercícios resolvidos","Exercício 13","","16ASHxIvzUU","1cCEOuwNhGQuaCBKw_N15aniz86nzMlXE"],["Exercícios resolvidos","Exercício 14","","HqXra2IA2kU","f:1sNmWQYhahojwW0pG5KPQC7sZfSfI9b-E"],["Exercícios resolvidos","Exercício 15","","m4KOWVB7BF4","f:1sNmWQYhahojwW0pG5KPQC7sZfSfI9b-E"],["Exercícios resolvidos","Exercício 16","","F0_EPpFwtXI","f:1sNmWQYhahojwW0pG5KPQC7sZfSfI9b-E"],["Exercícios resolvidos","Exercício 17","","k4lbwYgMAFM","1I_7rT5N08AYXN1eTQx77LqbkcPcJ4Zn-"],["Exercícios resolvidos","Exercício 18","","hxC06g6AFh8","1v5tpJeh6Qfuu6rK8Q4LkAZkKUhnbXflA"],["Exercícios resolvidos","Exercício 19","","g68xRF23ES8","1cCEOuwNhGQuaCBKw_N15aniz86nzMlXE"],["Exercícios resolvidos","Exercício 20","","9DUcYr8MtGs","f:1sNmWQYhahojwW0pG5KPQC7sZfSfI9b-E"],["Exercícios resolvidos","Exercício 21","","GzIbsUQcELM","106UAVgPbDoSVTZh7zNtGUtCUckN8Wxee"],["Exercícios resolvidos","Exercício 22","","u02qv1toejE","1dmGMb-BQj4KkTDj4rTGCMiuG40mkWGpN"]]},{"nome":"Cálculo 1","aulas":[["Módulo 1","Parte I","Funções: Análise de Gráficos","EjUYTycDI4w","1A0fjQas_4pOid6JjoWR_GKe3WXK7ir1G"],["Módulo 1","Parte II","Funções: Domínio de Funções","_M5f9Eft744","1A0Jm8M3LPLizaZUToLQKiMfjYpGmqFvH"],["Módulo 2","Parte I","Modelando a Área de uma Janela não Retangular","ZZ0Qrsi3nEc","1A0CGaW8pBtSbu2H6YWQkAwbm0HL2xYpj"],["Módulo 2","Parte II","Modelando a Temperatura em Função do Cricrilar de uma Espécie de Grilos","Gu0YWb_lrOo","1A2NcDtPSKA_7pJxhJGQOHAp5HG-NBvnl"],["Módulo 2","Parte III","Número de Morcegos em Função da Área de uma Caverna","SsvDe-Db7QA","1A2HN-zg_1uFTtxRPykooICHfA2EBmQxz"],["Módulo 3","Parte I","Função Composta: Modelando o Deslocamento de um Navio","9u8_ujcF1_Y","1A2-0l7J2phR7aC3pJBCpLONBI6YqhNnD"],["Módulo 3","Parte II","Função Exponencial: Modelando uma Colônia de Bactérias","kNqBO7UGDHI","1A0s8BQhks-BhfdqiqCtdkHximfq57TwJ"],["Módulo 3","Parte III","Modelando a Concentração de Analgésico na Corrente Sanguínea","O4gzJLjfl2A","1A0o_mKyCveHHLN-ILQsGbuPgNT5T3u2F"],["Módulo 4","Parte I","Limite: Definição e Determinação por Meio de Propriedades","2Epu2BRNRik","1A5K4TBvqS5QWdKQJUe0ziQbQbEeGHxze"],["Módulo 4","Parte II","Cálculo de Limites por Meio de Técnicas Algébricas","HXtv_e4DElQ","1A4qKWjAyNrfTyX1z-2TfCl90tX6dm3pO"],["Módulo 4","Parte III","Limite no Infinito: Conjugação para Eliminar Raízes Quadradas","pZ_aF4WwmRo","1A3Hg3FoNgmTh3cUDSpeXAHmG-zqcO3br"],["Módulo 4","Parte IV","Limites Laterais: Técnica para Mostrar que um Limite não Existe","jL-yNrYGsIw","1A6sXN-4l6aftFn9dMzz6QAjUF1cXJ_UR"],["Módulo 5","Parte I","Limites Infinitos e Assíntotas Verticais","YjdRhuNg9Jg","1A67gun-z_f8kR12VegmCmm93x2rUab6J"],["Módulo 5","Parte II","Técnica para Determinar Limites no Infinito e Assíntotas Horizontais","T8n951B5OjE","1A39U6a3M6fP79HeDcrhMdsgOdOZ7UO2T"],["Módulo 5","Parte III","Análise Qualitativa Completa de uma Função não Trivial","z7d5a_izJWc","1A4FdWY9khHVfrBuUlmBerrkHh9x6b9Zw"],["Módulo 5","Parte IV","Aplicação de Assíntota Horizontal: Um Modelo de Concentração de Sal","i3cTsXeA9t4","1A6NYyYX7bywNwmzpWT6PnjMv5OBj6hJD"],["Módulo 6","","Resumão de Funções Contínuas","hHi7zhMaDf8","1A_saxGRts8Hfn7fXpvjMzjD6vlBjfFun"],["Módulo 7","Parte I","Derivada: Definição, Reta Tangente e Taxa de Variação Instantânea","mNyROQ6x3cs","1A80a8ZPMruP8jlpC8zrmz67ef1sdWzrK"],["Módulo 7","Parte II","Derivada: Aplicações em Velocidade e Aceleração","LYguqSzeeIY","1AI8EQz5YTaVflE4ipj0SVndB3AoiFYjE"],["Módulo 7","Parte III","Derivada: Regra da Cadeia","u0vrRRIl55Q","1AHB0_QSK0juDcbwKA5lA9IYz-seeTr4b"],["Módulo 8","Parte I","Regras de Derivação e Derivadas das Principais Funções","JMvZTSUcNyY","1AJHC1Db7THDm3qsKj4BujY3gLq-noNb8"],["Módulo 8","Parte II","Regra da Cadeia e Derivada de Ordem 2","0InsFK3rM1w","1AJqJ4xJ1KqEWYL1Nhigi9ibiLqiUnjHA"],["Módulo 8","Parte III","Derivada de Ordem 50 da Função cos 2x","TKLD_NzVA18","1AJJxoRHYz4DlNn_bgOEidEIOIsHeieIi"],["Módulo 8","Parte IV","Derivada de Ordem 1000 da Função xe^{−x}","QLSxAOdcVMo","1AJyO_I2FbbdPi4pPF_nC6LsguvI-_QhB"],["Módulo 9","Parte I","Taxas de Variação na Biologia","9TQuEXin3fg","1A9dSfoTek1bykI1XCHq1e1GmJlP5PLyG"],["Módulo 9","Parte II","A Lei do Crescimento/Decaimento Natural","K-XbgcfQbVU","1A9KsQ8QylSFrwcIFbURostHnG4Y7qEK4"],["Módulo 10","Parte I","Derivação Implícita","Wr0yBMNnJFc","1A8-_jPGoGaStJSuGy7vOgb3eRNcsTqX2"],["Módulo 10","Parte II","Derivação Implícita: Exemplos","YTnnr54xMOA","1AAiYnCB_Rr7XgwdB2NYAANOEn3ZftS2g"],["Módulo 11","Parte I","Taxas Relacionadas: Balão Esférico","4vOlD8gXZoM","1AL7aBqM03e1ToYwtp00f2frEw8kDZvo-"],["Módulo 11","Parte II","Taxas Relacionadas: Queda de uma Escada","TsKdzA5FqwE","1ALnDRJ-fsgrLaj8-i_OzU34ossZw03yb"],["Módulo 11","Parte III","Taxas Relacionadas: Vazão em um Tanque Cônico","G7MnNvzIGS4","1AMMNOjjLL60Cgz6xegkfYPhRLYZnBZHu"],["Módulo 11","Parte IV","Taxas Relacionadas: Aproximação Entre Dois Carros","bXo4_IP1hqg","1AMZ7NtJFkrTtiMTGRfiQHKCYG0CvLele"],["Módulo 11","Parte V","Taxas Relacionadas: Holofote","IFtsMlb4jwM","1ANa1qEhdiM-M0AtTpYSQOasF4U91-ZGX"],["Módulo 11","Parte VI","Taxas Relacionadas: Vazão em um Cocho com Seção Transversal em Formato de Trapézio Isósceles","j8_8EMzABY4","1ANCxst6aOeVGKcTXdqIAVgXw80IKS-Nr"],["Módulo 12","Parte I","Valores Máximo e Mínimo de uma Função","fBc7JnHicVY","1AC8RiKReSb-YT2_etlBi1EaaNp1AUJF4"],["Módulo 12","Parte II","Pontos Críticos e o Teorema de Fermat","xxpEwGlpEl8","1AHPWsxehS_VOJ8hdSwSt6hoNXO5nBHhJ"],["Módulo 12","Parte III","Pontos Críticos: Método do Intervalo Fechado","UKzNFiPoDog","1AHgL6HOaUXR2gt7awBwRipByE2k5KMxE"],["Módulo 13","Parte I","Teste da Derivada Primeira","zCspGpbMKh4","1ANpVTwpYq-BpvJaHP6Pkd5WY8d2UwT5V"],["Módulo 13","Parte II","Teste da Derivada Segunda","rwTGhnhomcU","1A9vuepnysMMf-cfuXvEIgmH1itAuIgg5"],["Módulo 14","Parte I","Otimização: Área Máxima de um Cercado Retangular","zGuyETnf8Fc","1ADTXkqlnltHdZTW9gffxijmkZ9ALGrJi"],["Módulo 14","Parte II","Otimização: Área Máxima de um Cercado Retangular com Cercas Intermediárias","Fl7AfbakH2o","1ADqeooRD5wE72HB1ZkZi944sLfchfaxL"],["Módulo 14","Parte III","Otimização: Minimizando o Custo de Fabricação de uma Lata de Óleo","Rqu2yjC72_Y","1AEJVc6PA9WPf2pvTr36NLhbEne3u1HKl"],["Módulo 14","Parte IV","Otimização: Minimizando o Custo de um Contêiner Retangular","NqMcPe090sw","1AFpQiOPMhieIYzhmmqbY9ZuNMX7WdBgt"],["Módulo 14","Parte V","Otimização: Maximizando o Volume de um Copo com Formato Cônico","RyszpCPH6NE","1AEUY9Wp6VjRwD55FtpTESWWQX7qSeWyu"],["Módulo 15","Parte I","Primitivas ou Antiderivadas","u0ZV62YNgjM","1ARvViybJW_zdkv3fCAVgRrORX-pTsi-a"],["Módulo 15","Parte II","As Antiderivadas ou Primitivas das Principais Funções","xYWwxZxNYhc","1AQl6l2WR6msQ_TV1O0ZbvuQMVYIj0kqb"],["Módulo 15","Parte III","Integral Indefinida: Definição, Propriedades e Exemplos","a9wELNEd_jc","1APt0uGQAukl7nDwRF1HmNHVBCXrlYjRF"],["Módulo 16","Parte I","O Problema da Área de uma Região Irregular","mZ6IWDf-VNI","1ATSEa0e9ZcygWZLNWKfD0u2fc-fDYpLF"],["Módulo 16","Parte II","Integral Definida","OKYhbUgH7tM","1AT_hfE9LCCqAtXRswPdhgsYmD6Ra-5gh"],["Módulo 17","Parte I","O Teorema Fundamental do Cálculo: a Relação entre Derivada e Integral","b25-4DLdf2w","1AUX7SICIB6gwTDv-i8CVRhQRYXP1yw1v"],["Módulo 17","Parte II","O Teorema Fundamental do Cálculo","0-Nb8zor8YA","1AVv5gH4so_eH8cVaH4PM4c8cegJd73st"],["Módulo 17","Parte III","O Teorema Fundamental do Cálculo: Aplicações","gWj4woH1IGY","1AVXDP_sGBL8VYv-T_1_Ny4Vt9orU99s6"],["Módulo 18","Parte I","O Teorema Fundamental do Cálculo e Energia Solar","xRKAiPZT5pc","1ATXifYHUYoesAhrust_Ntp4s7IQFQ1aj"],["Módulo 18","Parte II","O Teorema Fundamental do Cálculo: Movimento Retilíneo","EoY2pmH95JI","1AUtfIVOH8pljqayMhycFgyhZJqeQR_xb"],["Módulo 18","Parte III","Antiderivação e o Movimento Retilíneo: Aplicação 1","RBpu8cJYJNM","1AT8YUEUZ4cgJ_HuVb5GuBt8IIdHl4-JC"],["Módulo 18","Parte IV","Antiderivação e o Movimento Retilíneo: Aplicação 2","DOrYkqdGX1g","1ASpOJWny_OhYrc_M_zDzdXxz-A9hXPDO"]]},{"nome":"Equações Diferenciais Ordinárias","aulas":[["Módulo 1","Parte I","EDOs: Definições e Notações","ejhpadSf3sw","1WNODRnjTPmat4K3s5Au7eN4a0pHVba1w"],["Módulo 1","Parte II","EDOs: Soluções","wcHSd1FSvZY","1cI9VnpnJ4z1QWoWE5HjTbKXFNBdDMO8w"],["Módulo 1","Parte III","Problemas de Valores Iniciais","u8njPKeRv0A","1kW0EjY_XAshcqL7C9WWkhqY_Jg_Ez1-1"],["Módulo 2","Parte I","EDOs Lineares de Primeira Ordem - Parte I","i9ds16wmsZw","1SoctA4k1mQt0LxvSE7u9TkF_tTS3W2uy"],["Módulo 2","Parte II","EDOs Lineares de Primeira Ordem - Caso Geral","5XDDikx9tW0","1nXhePCMFzcmgJJqFQt3NwnW7F9yj9eCL"],["Módulo 3","Parte I","Crescimento Populacional","LLeNgx2qHDc","1oUJgCWnEICZS0uPNiFTBwSk8kIcQ_uFW"],["Módulo 3","Parte II","Datação por Carbono 14","KEuky1XmSiM","1phMNRo3gXh6xL2YeI8oPOe5hNPMsYdnX"],["Módulo 4","Parte I","EDOs Separáveis","MQwMlh3B0o4","1pD4TDioeJUxhvI0H30gdWu_XT6ZHSDxH"],["Módulo 4","Parte II","A Lei de Resfriamento de Newton","YiEmGJGlypE","1qFurmtsDQO2_yS9k1Um5PA9poGVJxRrt"],["Módulo 5","Parte I","EDOs de Primeira Ordem: As Equações de Bernoulli","sBEt7q21p-Y","1W2wEdL0pklCbEhQHRdjsZYg0wn4bJ6Ej"],["Módulo 5","Parte II","Crescimento Logístico","_5KUQj3_Tf4","1WyP6I6i8qYdU3K83qwPK7dbP5OYPM_6F"],["Módulo 6","","EDOs de Primeira Ordem: As Equações de Riccati","6NW9_RGF3rw","1YCe4TytvLzCLdIJtqEljGFn3mO0akphG"],["Módulo 7","Parte I","EDOs de Primeira Ordem Homogêneas","1dCHFpmk4oI","1ZlhEwutjiplUoos7wOcH4imRNvAuq8Dq"],["Módulo 7","Parte II","EDOs de Primeira Ordem Homogêneas - Exercício","Jyjov6UAyfg","1Z67eKfj4A__yKakYiqFEEjiRbrNHC8NE"],["Módulo 8","Parte I","Uma Introdução às EDOs Exatas","OBVNoOE_Kpo","1_rR7P6HLlEqzptcygwnJ9mJAIMW0HpBE"],["Módulo 8","Parte II","EDOs Exatas","D28mx9BLx1c","1ZoJ-lylKjJtNG7LTgVNePNHjroHie8GJ"],["Módulo 8","Parte III","EDOs Exatas: Exemplo","rMe-eJS39CE","1aR6KhjlohuokshLsHO8o3rn55Opui8Tj"],["Módulo 9","","EDOs Não Exatas: Fatores Integrantes","Q9wZXLGPW3w","1bba3k47pwahJ9rugBRvcpYhdjLn9Vzbz"],["Módulo 10","Parte I","EDOs de Segunda Ordem Redutíveis: y′′ = f(x)","5AYAP9fptUM","1b6aYWLcmIN56dPMLepQ5e66vIhQ_KpNO"],["Módulo 10","Parte II","EDOs de Segunda Ordem Redutíveis: y′′ = f(x, y′)","XkmJ7cgURxY","1datEPqhI9PpjMfCbpYprfR2dlURyEKCE"],["Módulo 10","Parte III","EDOs de Segunda Ordem Redutíveis: y′′ = f(y)","69kACiFGwDE","1eudbdGcfEjSuZfwm72M9KONuaqUW61zp"],["Módulo 10","Parte IV","EDOs de Segunda Ordem Redutíveis: y′′ = f(y, y′)","7SvRs3hvizc","1eBe06yAuh0C8ii2oomSjJ_wWSpfE5Sz3"],["Módulo 11","Parte I","EDOs de Segunda Ordem Lineares Homogêneas Parte I","i3yOuUFk2pg","1fJ1KJHRSDdwlhCrIGF2yQqu4n9R2hXH5"],["Módulo 11","Parte II","EDOs de Segunda Ordem Lineares Homogêneas Parte II","0bYYfqVYicw","1hBqF0i2UqmDDFPy7sna-yJmRr4Rg8rw2"],["Módulo 11","Parte III","EDOs de Segunda Ordem Lineares Homogêneas Parte III","RCKaDVFNal0","1g7nEydKpj4hamQETpnjXZgHUigXZAqgy"],["Módulo 12","","EDOs de Segunda Ordem Lineares Homogêneas - Redução de Ordem","4P-SVeUdtLc","1hpWOWdwA8Uq5HGSrwgg6c8z6_q4MeAhf"],["Módulo 13","Parte I","EDOs de Segunda Ordem Lineares Homogêneas com Coeficientes Constantes - I","dqYyUjkmm6U","1imSiNn1IXGl4wffKfZyYRxVk3Q_MnJaC"],["Módulo 13","Parte II","EDOs de Segunda Ordem Lineares Homogêneas com Coeficientes Constantes - II","ym1Xr8XBzwo","1iLgz8434v_Vh9Ck9gUvlG2vscooFMh_G"],["Módulo 13","Parte III","EDOs de Segunda Ordem Lineares Homogêneas com Coeficientes Constantes - III","a4ohV92C0Gg","1jGQpWC15JZjWc1yAfVtCaufG7C-gpFDL"],["Módulo 14","Parte I","EDOs de Euler-Cauchy Exemplo","UO27YYZB-hM","1jolosIH6MzU7ECrPXMajihLZbiXH43Fd"],["Módulo 14","Parte II","EDOs de Euler-Cauchy","dvfxyMenFxE","1lM3YpBfUG5BwwJb7gRwAPAclKH3wayhg"],["Módulo 15","Parte I","EDOs de Segunda Ordem: Método da Variação dos Parâmetros","nogYoaCguo8","1nFhcB-JvvBx6Lr9lqVWQ6SxGbK5aGz04"],["Módulo 15","Parte II","EDOs de Segunda Ordem: Método da Variação dos Parâmetros – Exemplo 1","lcKpTkZLwJU","1Oi3rg2JwsVWRw_99sF3OzgITOGm0Z1hE"],["Módulo 15","Parte III","EDOs de Segunda Ordem: Método da Variação dos Parâmetros – Exemplo 2","RNT2QNZmVfQ","1OBOpHvUj1Zi_lkpEU_MUbsGo4UT9gumM"],["Módulo 16","Parte I","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte I","thHHyNbu0f0","1QKwaT___ZvUIbsdIgP-diEPs2BhAAJPz"],["Módulo 16","Parte II","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte II","cKXI-Rv9LwE","1QLdNzjemGbyQEYcoKMr_ISB8cN6N6nuW"],["Módulo 16","Parte III","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte III","p6SkNRUpCyA","1Pr2mVGn-Fui2_di-sClWV7c4LjO8eHIK"],["Módulo 16","Parte IV","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte IV","W_CpYluonvY","1R7_BqX9vXI15RYFT7Ziu0DBBnsNewUk6"],["Módulo 16","Parte V","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte V","AEiAEOE6ACI","1RrrczEaq0KiWajTj7voXlWI0xNoSUPDr"],["Módulo 16","Parte VI","EDOs de Segunda Ordem: Método dos Coeficientes a Determinar - Parte VI","IahzMEAj-ZQ","1SP1DLW63LML4kWgqtMzLKnTg8Zb-NE24"],["Módulo 17","Parte I","EDOs de Terceira Ordem Lineares Homogêneas Parte I","cTolZruWhLI","1TH_VvnylfdAgjdqauCj3efpCPde4tbaw"],["Módulo 17","Parte II","EDOs de Terceira Ordem Lineares Homogêneas Parte II","zrFG8mY1sEA","1Upccqo_57-h-MooaOvJBaaidJEsC1nEw"],["Módulo 18","Parte I","EDOs de Terceira Ordem Lineares Homogêneas: Redução de Ordem","1eYpV835P9c","1UEbIR2JFRQmbx4x2oDFVLBXOFId__DQH"],["Módulo 18","Parte II","EDOs de Terceira Ordem Lineares Homogêneas com Coeficientes Constantes","-5ddEkGAs2M","1VaqOUTdB5sOXREKBs4YKBADYL3_SgjVr"],["Módulo 18","Parte III","EDOs de Terceira Ordem Lineares: Método da Variação dos Parâmetros","KEBNMPDbJFc","1mWwa8YIjpxQ0wECOLT5aD9rrVojg5RZP"],["Módulo 18","Parte IV","EDOs de Terceira Ordem Lineares: Método dos Coeficientes a Determinar","5I6xeOFLcBA","1nsGhrq3mPCbVZGqv5-Al8rEZ9qpxSiTz"]]},{"nome":"Álgebra Linear","aulas":[["Módulo 1","","Definição de Espaço Vetorial","QIbuJoVu6t4","1op_u1JjYUWGJCDhgxeS52GXlhWrnzWvY"],["Módulo 2","Parte I","Espaços Euclidianos","9FAYuN5cARQ","1aDmb_NEBJXcHGXu7NLOJPGgZ1AVBSwBn"],["Módulo 2","Parte II","Espaços Euclidianos Generalizados","2yreRvxdzKE","1liNaQZC0yf7H2vSPm0RTwiFdaH1ttRZj"],["Módulo 2","Parte III","Um Exemplo Exótico","LkbPJetqpN8","1qb8n3Gr3PmDRK7q34LdKQHU6A2LFlfnb"],["Módulo 3","Parte I","Espaço das Matrizes","FLU4yFlcZgg","1S4KJoNQu4J3hCUsA_YOPF8YYWplDcXFp"],["Módulo 3","Parte II","Espaço dos Polinômios","oRD6Pzv-040","1yVHHnpFBZWA9iIZM0NxpYWJCHzErf1yC"],["Módulo 3","Parte III","Espaço das Funções","e0B4PSfNBCA","1YeK0Msf-JXrZh97kYNGI1MIW4VyskpF0"],["Módulo 4","","Propriedades Elementares dos Espaços Vetoriais","O1osyxdLBww","1yrWnwevXQOUnISW87v9RKM0_LbVnBaL2"],["Módulo 5","","Subespaços Vetoriais: Definição","DjeRfosl86g","1HhGYFJh7Fqs5IfP-JMvf8kUZEXSLp-3i"],["Módulo 6","Parte I","Subespaços no Plano Euclidiano","IFf2hHJlgp4","1nDLjGBXR864YRW_2yrsdmNQsRsTiLdao"],["Módulo 6","Parte II","Subespaços no Espaço Euclidiano","rvCQe1m2GEI","1GSIn5LUsV032VzvF6gYBmNYSoeC5XUTB"],["Módulo 6","Parte III","Subespaços do Espaço das Matrizes","yyxdT5H-r4w","1N1n3tYGl8pau3Z4TixuEWLMQEXUbV4nC"],["Módulo 6","Parte IV","Subespaços no Espaço dos Polinômios","gDHIG9UlDoE","1JoABLjTBjYetHVobYARg7DewhL_CEHxM"],["Módulo 6","Parte V","Subespaços no Espaço das Funções","s6ur8NGbMiU","15yQEXt-ty-NBj7-TUNUjcS8fZXRNC9yA"],["Módulo 7","Parte I","Interseção de Subespaços","n6SMOMcdpPg","19hnfLC6BvUZ9gQeqI8lDQBkcPw9in9Jr"],["Módulo 7","Parte II","Soma de Subespaços","a7-U3fqtN2Q","17NdTrKbFYzesOrDebC7sQvvjWn17Bx0O"],["Módulo 8","Parte I","Soma Direta de Dois Subespaços","PyBgjv5uzH8","1_uJe-cQyUctNzKyDo2WUjlhf-9rKEcm0"],["Módulo 8","Parte II","Soma Direta de n Subespaços","iv7OlRpAIDA","18B-UWYSOdPzR3b2RNyLlVBTUJjhUGDFM"],["Módulo 9","","Combinações Lineares","9YiAlAZcCR4","1XrVwU-JNfoe-cmFgKVr0TfSoLSqI0aq9"],["Módulo 10","Parte I","Subespaços Gerados","owOJjrVJzWQ","12HpjrDVIPpMHIXmU4S6Fjx1CCmbN4DvT"],["Módulo 10","Parte II","Exemplos de Subespaços Gerados","GDJBt-fTcAY","1ydf__G_V_7HTNmA9O0z5lhXOiMxIAvmd"],["Módulo 11","","Espaços Finitamente Gerados","K1_1Sckx0-c","1BgQPWX7M7yMBDYl5j_TUgo-N7M-GzlJH"],["Módulo 12","Parte I","Vetores LI e LD: Definição","t5L6vvhFiGY","1OaF_z6wPW22DS9BYR7HsFLRNVyFPYgnW"],["Módulo 12","Parte II","Vetores LI e LD: Exemplos e Propriedades","QNJLLCpWffE","1wL0XAdybxpdQ8C_nXAH6dQGWYc-qRG6V"],["Módulo 12","Parte III","Vetores LI e LD nos Espaços Euclidianos","OQz-f-mQiH0","13XM0Dirzy_dhVUg3aU5ILpfyvqDxL44X"],["Módulo 13","Parte I","Bases: Definição e Exemplos","5ePtFDEIYNM","1oOAzpx4jGLz-HgIShnv828KVYaYDlIxu"],["Módulo 13","Parte II","Extrair Uma Base de Um Conjunto de Geradores","f7WsrBkzXA4","1MGv_54vYMdUvCGAgYr5rsmfUEkgdeImv"]]},{"nome":"Lógica e Teoria de Conjuntos","aulas":[["Módulo 1","","Introdução à Lógica: Proposições e Tabelas Verdade","0qf8ZeLuNXY","14QB2DH3zbbNlEx96l3LQdNIlqQ2SPGqS"],["Módulo 2","Parte I","Cálculo Proposicional","VkAYywuesI4","14j2XmT2E00mVRrNHeZLdC67i5TjtqCqJ"],["Módulo 2","Parte II","Cálculo Proposicional: Negação","meFATUbnGqY","14iBCUqKH8qHyOBOEFNtpomAQpbZxRxTU"],["Módulo 2","Parte III","Cálculo Proposicional: Conjunção","ik32jtqMjlQ","14eszCJmPoEGuzko_7iNBPLyGPqJCl5IY"],["Módulo 2","Parte IV","Cálculo Proposicional: Disjunção","G_JAhSbp05c","14b9bohY8eAFpyv-GS6TGIDGotdGZ9YZi"],["Módulo 2","Parte V","Cálculo Proposicional: Condicional","pCvkaR1lCUo","14ex91vq4ej2RfflFhT1OVeAPJbDlWuqu"],["Módulo 2","Parte VI","Cálculo Proposicional: Bicondicional","TmkcOLvPwHA","14fGaykWF6RuKga-TQtNNpO1H6SZiejUZ"],["Módulo 2","Parte VII","Cálculo Proposicional: Disjunção Exclusiva","VsqUCzqQT68","14eYOIbRezfldvTm_k9nrmrefpBLSXdps"],["Módulo 3","Parte I","Tabelas Verdade de Proposições Compostas","nhyDjS2SRHY","14SMISnbusfN1UQ94S5STjIbE5qnFvNsC"],["Módulo 3","Parte II","Tautologias e Contradições","BYpUM9YWxW0","14SuY-k3iqYRUZ1BrVHXxI1ht7C2aCmZI"],["Módulo 4","Parte I","Proposições Abertas","4F-xEAr8UZk","16WEDNt5oQjcRG1yRZAvyAcEYksK7MM6g"],["Módulo 4","Parte II","Quantificador Universal","oR10yOTGJTk","16S9kbDpoJ2U-lgfon5c8wgpfMQAhUm-7"],["Módulo 4","Parte III","Quantificador Existencial","HQce9QCnWE0","16WI76T1yNPLtlmxnWDfF14EFMH5P3486"],["Módulo 5","Parte I","Noções Intuitivas sobre Conjuntos","03QlyJjkLW4","15AGeunlnm71MqtZtbv7S_taAn6p3FQPH"],["Módulo 5","Parte II","Igualdade e Continência de Conjuntos","O_rCqFoMjCA","15MHpU4BCf6OTUyu8ct0UPpTlPdq5E7Rt"],["Módulo 5","Parte III","Maneiras de Definir um Conjunto","Wurk2QqVJRA","15IpoevT4yTmadn574tbWyAWHudwjmRPH"],["Módulo 6","Parte I","Interseção de Conjuntos","uSNpZ4S647I","15mSg2dmBqLP3NAMh28nNEMexgeX3fCGE"],["Módulo 6","Parte II","União de Conjuntos","KfZMHm8ZFgM","15lMEo8BEFWZATh7d6XnCQcp5tGKDS1IS"],["Módulo 6","Parte III","Diferença de Conjuntos","whzFjwq7KgY","15mvecXCux3wHRWTRxjACd0XPl7zEVzZu"],["Módulo 6","Parte IV","Complementar de um Conjunto","qGuWj0f2DbA","17NpUe42nnkXKx5HHxsOt-My5zr7VOHyw"],["Módulo 7","Parte I","Implicações Lógicas","gzSLWPo4dQI","16oU4aWGwXiY1TLwvaHpHMnOuXY5ZmTFc"],["Módulo 7","Parte II","Aplicações de Implicações Lógicas em Conjuntos","WCTGgKkCWrY","16pBnLKRpmP8tSs3zFNEphVCk5IRvoYPl"],["Módulo 7","Parte III","Equivalências Lógicas e Suas Aplicações","ghPcmWueiys","16vy4GNi2V9KzlDrTRc1So-dh7UjFUVXM"],["Módulo 8","Parte I","Álgebra das Proposições","gw_7xsm18co","16c3Rpp85nGKi5PHYZzeSQga9GgC8pY9j"],["Módulo 8","Parte II","Propriedades Algébricas dos Conjuntos","OF_MnN-Wzlk","16frqaD0_LxkQhjIh_ZXm59PqfhOhZ54E"],["Módulo 8","Parte III","Negações em Conjuntos: As Leis de De Morgan","V-Q4l7PV8Rc","16aEeEKdtqeKqLO3OSGtvnOuCmlATVGrh"],["Módulo 9","Parte I","Argumentos e Inferências","5hAGEaEj21k","15VPOYCmD-ZptK1ZYJRLW5xW2omjDeaKp"],["Módulo 9","Parte II","Exemplos de Inferências","HdLYYs3brLM","15gVsRZV-WPQ7vFmNemJMM3hPe7JeivH0"],["Módulo 10","Parte I","Demonstração Direta","Jk4lF5qrjAg","16A49_it6onOM4E8JFGsvG1Qc9PO1nef2"],["Módulo 10","Parte II","Demonstração Condicional","uRzTMvFd9R4","169ABy_S7H00kizgVTcRErYw0LvSwUv4n"],["Módulo 10","Parte III","Demonstração Indireta ou por Absurdo","vFGXIxDuNxk","169RVrPT2piwG6NLX_KA53bl8j98oUYlz"],["Módulo 11","Parte I","Demonstração com Quantificadores","Tsbv-aTBtME","15Q_QC-5opvYakK4MEQK6gxoV9_WLTCiF"],["Módulo 11","Parte II","Demonstrações com Quantificadores: Exemplos","hY4c7SWnRGs","15PubG0139awT8syYL5rdF4cntGiDhhHl"],["Módulo 12","Parte I","Predicados: Variáveis Livres e Aparentes","1-cI12NgsOA","16Ilzt8XE_HMisztcayo0fpHqghQ77OqT"],["Módulo 12","Parte II","Proposições Abertas em Várias Variáveis","4kn1Xs1cnDc","16FXhUhbvnoG2J1i_2GbRx041i6-F-Tdf"],["Módulo 13","Parte I","Exemplos de Predicados em Várias Variáveis","G9kdfn5rOOQ","17HRAYMGXzE0N5UNV3-yFy713qSpL0FVh"],["Módulo 13","Parte II","Negações de Predicados em Várias Variáveis","pz6euxGTPS0","17OntFgy7XAyg_gyIJStBzEulcEBmVZGf"],["Módulo 13","Parte III","Quantificadores em Conceitos Matemáticos","gBOtnVOoCSk","17CjwtPEA3CDzyHHQZInbNY7h8sMqc01I"],["Módulo 14","Parte I","Conjunto das Partes e Pares Ordenados","j-P5raoQnI0","11483EmxjhCZe3eIvo4hkGgsxtOFSrVWN"],["Módulo 14","Parte II","Produto Cartesiano","SSYK_Qhc7po","116J1j0vrBMYXat6a-1VDlXbD_TGZlYaZ"],["Módulo 14","Parte III","Propriedades do Produto Cartesiano","arKgrPHjySU","113LnCbaMJ5g1h6oqaKR5jlRvZnfA2gV3"]]},{"nome":"Matemática Financeira","aulas":[["Aulas","Aula 1","Razões e Proporções","G9d0nEyUjwY","1e9rPYnmMoVi39sJANqi3tS9ooE5E5a-E"],["Aulas","Aula 2","Grandezas Diretamente Proporcionais","5zY5N4ixVTw","1MDEUvlTWNCdUZ-Rxgos2zc6GHRFPFpkG"],["Aulas","Aula 3","Grandezas Inversamente Proporcionais","_5iE_ri-0ww","1GyvrY5-IX7RtWIO08nLVLbC5OXwxWHVd"],["Aulas","Aula 4","Divisões de Lucros e Prejuízo","ePWz-EZt-Qk","1Rb55-XuRD-2VvuLiKrRs0Bi2t8F-wFy0"],["Aulas","Aula 5","Porcentagem","6oqkDmOSYDw","1NDDQ9SC_9ANZW8hskcrLjTVZm4NoydJO"],["Aulas","Aula 6","Acréscimos e Decréscimos","OjxVKazVwdM","13U6ieoZfIi55Tc5fwGkFBtR8czi-uitw"],["Aulas","Aula 7","Acréscimos e Decréscimos Sucessivos","JFI2q4BOyWU","1MIcNO4rDIwdEzIg8ZSpZmZbpWEWdkKzx"],["Aulas","Aula 8","Taxa Média","lwmfB8VvwS0","183HozII3OdyR2NpzwYTifz9kMb6V1DAo"]]}];
+(function(){
+  var raiz=document.getElementById('lista-cadernos'),busca=document.getElementById('busca'),vazio=document.getElementById('sem-resultado'),itens=[];
+  function drive(id){return id.slice(0,2)==='f:'?'https://drive.google.com/drive/folders/'+id.slice(2)+'?usp=sharing':'https://drive.google.com/file/d/'+id+'/view?usp=sharing';}
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function exp(t){return esc(t).replace(/'/g,'’').replace(/\^\{([^}]*)\}/g,'<sup>$1</sup>').replace(/\^(\d+)/g,'<sup>$1</sup>');}
+  function norm(t){return t.replace(/['’]/g,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+  CADERNOS.forEach(function(c){
+    var det=document.createElement('details');det.className='caderno';
+    det.innerHTML='<summary>'+esc(c.nome)+'<span class="qtd">'+c.aulas.length+' aulas</span></summary>';
+    var grupo=null,ul=null,h=null;
+    c.aulas.forEach(function(a){
+      if(a[0]!==grupo){grupo=a[0];h=document.createElement('h3');h.textContent=grupo;ul=document.createElement('ul');ul.className='aulas';det.appendChild(h);det.appendChild(ul);}
+      var li=document.createElement('li'),rot=a[1]?(a[2]?'<span class="rot">'+esc(a[1])+':</span> ':esc(a[1])):'';
+      li.innerHTML='<span>'+rot+exp(a[2])+'</span><span class="links"><a href="https://youtu.be/'+a[3]+'">Vídeo</a><a href="'+drive(a[4])+'">Slides</a></span>';
+      itens.push({li:li,ul:ul,h:h,det:det,txt:norm(a[0]+' '+a[1]+' '+a[2].replace(/[\^{}]/g,''))});
+      ul.appendChild(li);
+    });
+    raiz.appendChild(det);
+  });
+  busca.addEventListener('input',function(){
+    var q=norm(busca.value.trim()),achou=0,vis={};
+    itens.forEach(function(i){var ok=q===''||i.txt.indexOf(q)>-1;i.li.hidden=!ok;if(ok){achou++;vis[itens.indexOf(i)]=1;i.ul.dataset.v='1';}});
+    itens.forEach(function(i){var tem=Array.prototype.some.call(i.ul.children,function(l){return !l.hidden;});i.ul.hidden=!tem;i.h.hidden=!tem;});
+    Array.prototype.forEach.call(raiz.children,function(d){var tem=Array.prototype.some.call(d.querySelectorAll('li'),function(l){return !l.hidden;});d.hidden=!tem;if(q!=='')d.open=tem;});
+    vazio.hidden=achou>0;
+  });
+})();
+</script>
+</body>
+</html>
