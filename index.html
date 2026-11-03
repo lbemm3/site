@@ -21,10 +21,11 @@ a:hover{color:var(--ouro)}
 .pular{position:absolute;left:-999px;top:0;background:var(--tinta);color:#fff;padding:.5rem 1rem}
 .pular:focus{left:0;z-index:10}
 main,footer{max-width:62rem;margin:0 auto;padding:0 1.5rem}
-.topo{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:3rem;align-items:center;padding:4.5rem 0 3.5rem}
+.topo{text-align:center;padding:4rem 0 2.5rem}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:3rem;align-items:start;padding:0 0 3.5rem}
 h1{margin:0 0 .6rem;font-size:clamp(2.7rem,8vw,4.9rem);line-height:1;font-weight:500;letter-spacing:-.025em}
-.papel{margin:0;font-family:var(--sans);font-size:1.05rem;color:var(--suave);max-width:30ch;line-height:1.5}
-.nav{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:1.75rem;font-family:var(--sans);font-size:.95rem}
+.papel{margin:0 auto;font-family:var(--sans);font-size:1.05rem;color:var(--suave);max-width:46ch;line-height:1.5}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1.5rem;margin-top:1.75rem;font-family:var(--sans);font-size:.95rem}
 h2{margin:0 0 1rem;font-size:1.6rem;font-weight:500;letter-spacing:-.01em}
 h3{margin:2rem 0 .25rem;font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--acento)}
 section{padding:2.5rem 0;border-top:1px solid var(--linha)}
@@ -42,7 +43,7 @@ p{margin:.6rem 0;max-width:68ch}
 .cayley output{display:block;min-height:1.6em;margin-top:.5rem;font-size:1rem;color:var(--tinta)}
 
 /* dia da semana */
-.data{margin-top:1.75rem;padding-top:1.1rem;border-top:1px solid var(--linha)}
+.data{font-family:var(--sans)}
 .data label{display:block;font-size:.9rem;color:var(--suave);margin-bottom:.4rem}
 .data .linha{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.25rem}
 .data input{width:9.5rem;font:inherit;font-size:1.05rem;padding:.45rem .6rem;border:1px solid var(--suave);border-radius:4px;background:#fff;color:var(--tinta)}
@@ -74,8 +75,12 @@ p{margin:.6rem 0;max-width:68ch}
 footer{padding-top:1rem;padding-bottom:3rem;color:var(--suave);font-size:.95rem;border-top:1px solid var(--linha)}
 footer p{margin:.2rem 0}
 
+/* textos justificados (o topo permanece centralizado) */
+section p,.pub,.obras span,.aulas li>span:first-child,.data .nota,footer p{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+
 @media (max-width:48rem){
-  .topo{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0 2rem}
+  .topo{padding:2.5rem 0 1.5rem}
+  .duo{grid-template-columns:1fr;gap:2.5rem;padding-bottom:2.5rem}
   .obras li{grid-template-columns:1fr}
 }
 </style>
@@ -84,17 +89,18 @@ footer p{margin:.2rem 0}
 <a class="pular" href="#ferramentas">Pular para as ferramentas</a>
 <main>
   <header class="topo">
-    <div>
       <h1>Laerte Bemm</h1>
-      <p class="papel">Professor de Matemática na Universidade Estadual de Maringá, com foco em Álgebra Abstrata.</p>
+      <p class="papel">Professor de Matemática na Universidade Estadual de Maringá.</p>
       <nav class="nav" aria-label="Seções da página">
         <a href="#sobre">Sobre</a>
         <a href="#ferramentas">Ferramentas</a>
         <a href="#publicacoes">Publicações</a>
-        <a href="#canal">Youtube</a>
+        <a href="#canal">YouTube</a>
         <a href="#cadernos">Cadernos</a>
       </nav>
-    </div>
+  </header>
+
+  <div class="duo">
     <div class="cayley">
       <table id="tabela" aria-label="Tabela de somas do grupo Z_n"></table>
       <output id="conta" aria-live="polite">Passe o mouse (ou toque) em uma célula.</output>
@@ -102,27 +108,27 @@ footer p{margin:.2rem 0}
         <span>Tabela de somas de ℤₙ</span>
         <label>n = <select id="n" aria-label="Valor de n"></select></label>
       </div>
+    </div>
       <div class="data">
         <label for="data">Que dia da semana foi? Digite uma data a partir de 01/03/1600.</label>
         <div class="linha">
           <input id="data" type="text" inputmode="numeric" autocomplete="off" placeholder="24/03/1722" aria-describedby="dia">
           <output id="dia" class="aviso" for="data" aria-live="polite">Formato: dd/mm/aaaa</output>
         </div>
-        <p class="nota">O cálculo usa aritmética módulo 7, como a tabela acima com n = 7.</p>
+        <p class="nota">O cálculo usa aritmética módulo 7, como a tabela de somas com n = 7.</p>
         <p class="nota">A fórmula está deduzida no artigo <cite>Aplicação de Aritmética Modular no Calendário</cite>, de Laerte Bemm, Guilherme Leopold e Priscila Bemm (JEEPEMA, v. 6, n. 1, 2022, p. 1–15). <a href="https://jeepema.com.br/index.php/jeepema/pt_BR/article/view/36/pdf">Ler o artigo (PDF)</a></p>
       </div>
-    </div>
-  </header>
+  </div>
 
   <section id="sobre">
     <h2>Sobre</h2>
-    <p>Professor Associado do Departamento de Matemática da Universidade Estadual de Maringá (UEM), com atuação nas áreas de Álgebra e Educação Financeira com Matemática. Possui graduação em Matemática pela Universidade Federal de Santa Maria (UFSM), mestrado em Matemática pela UEM, com ênfase em Álgebra em Teoria de Grupos Solúveis, e doutorado em Matemática pela Universidade Federal do Rio Grande do Sul (UFRGS), com foco em Ações Parciais.</p>
+    <p>Professor Associado do Departamento de Matemática da Universidade Estadual de Maringá (UEM), com atuação nas áreas de Álgebra, Educação Financeira e Matemática Financeira. Possui graduação em Matemática pela Universidade Federal de Santa Maria (UFSM), mestrado em Matemática pela UEM, com ênfase em Álgebra em Teoria de Grupos Solúveis, e doutorado em Matemática pela Universidade Federal do Rio Grande do Sul (UFRGS), com foco em Ações Parciais.</p>
     <p>A pesquisa concentra-se na teoria de ações parciais e suas aplicações em estruturas algébricas, incluindo anéis semiprimos, anéis de Martindale e mais recentemente em Álgebras Booleanas. Alguns trabalhos foram publicados em periódicos de referência, como Journal of Algebra, Journal of Pure and Applied Algebra e Communications in Algebra, abordando temas como globalização de ações parciais, propriedades de anéis de Goldie e aspectos cohomológicos de graduações.</p>
     <p>Além da pesquisa em álgebra, desenvolve investigações em Matemática Financeira e no uso de Inteligência Artificial aplicada tanto à álgebra quanto aos processos de ensino e aprendizagem, com ênfase na integração entre rigor teórico e inovação pedagógica.</p>
     <p>No âmbito institucional, participa de projetos de pesquisa e extensão, com destaque para o projeto de pesquisa “Ações Parciais sobre Álgebras Booleanas” e os projetos de extensão Unidade de Inserção Profissional (UNIP/UEM), “Kit de sobrevivência à Matemática” e UEM CONECTA+, voltados ao apoio à formação acadêmica, à permanência estudantil e inserção dos estudantes da UEM no mercado de trabalho.</p>
-    <p>Destaca-se também pela criação e desenvolvimento do “Canal da Álgebra Abstrata”, concebido como um projeto prssoal de impacto educacional voltado à democratização do acesso ao conhecimento matemático. O canal reúne conteúdos organizados em playlists que abrangem diferentes áreas, como Álgebra, Cálculo, Equações Diferenciais Ordinárias e Matemática Financeira, e funciona como uma extensão do ambiente de ensino, alcançando estudantes para além da sala de aula e contribuindo para sua formação acadêmica de maneira contínua, acessível e gratuita.</p>
+    <p>Destaca-se também pela criação e desenvolvimento do “Canal da Álgebra Abstrata”, concebido como um projeto pessoal de impacto educacional voltado à democratização do acesso ao conhecimento matemático. O canal reúne conteúdos organizados em playlists que abrangem diferentes áreas, como Álgebra, Cálculo, Equações Diferenciais Ordinárias e Matemática Financeira, e funciona como uma extensão do ambiente de ensino, alcançando estudantes para além da sala de aula e contribuindo para sua formação acadêmica de maneira contínua, acessível e gratuita.</p>
     <p>Na docência, atua na graduação em diversos cursos e na pós-graduação, com orientação de mestrado no programa Profmat da UEM. Sua prática docente é orientada pela articulação entre profundidade conceitual, clareza didática e uso estratégico de tecnologias digitais.</p>
-    <p>Junto com um grupo docente e discente de zootecnia da UEM, desenvolve um aplicativo de gestão leiteira gratuito para pequenos produtores familiares chamado Leite Fácil: <a href="https://leite-facil-3va8kdgwd-campofacil.vercel.app/">Abra o aplicativo</a><p>
+    <p>Junto com um grupo docente e discente de zootecnia da UEM, desenvolve um aplicativo de gestão leiteira gratuito para pequenos produtores familiares chamado Leite Fácil: <a href="https://leite-facil-3va8kdgwd-campofacil.vercel.app/">Abra o aplicativo</a></p>
   </section>
 
   <section id="ferramentas">
@@ -135,7 +141,7 @@ footer p{margin:.2rem 0}
       <li><a href="https://lbemm3.github.io/equacoes-diofantinas/">Equações diofantinas em ℤ[i]</a><span>Resolve aX + bY = c nos inteiros gaussianos, com algoritmo de Euclides, constantes de Bézout e solução geral.</span></li>
       <li><a href="https://lbemm3.github.io/polinomios-irredutiveis/">Polinômios irredutíveis de grau 3</a><span>Gera e verifica polinômios irredutíveis em ℚ[x] pelos algarismos dos coeficientes, sem fatorar.</span></li>
       <li><a href="https://lbemm3.github.io/acoes-parciais/">Ações parciais de Cₙ</a><span>Constrói ações parciais de grupos cíclicos sobre conjuntos finitos e entrega o documento em LaTeX.</span></li>
-      <li><a href="https://lbemm3.github.io/quebra-cabeca-numerico/">Jogo do 15 de Sam Loyd</a><span>Quebra-cabeça deslizante com explicação matemática via grupo de permutações da impossibilidadede solução da metade das possibilidades.</span></li>
+      <li><a href="https://lbemm3.github.io/quebra-cabeca-numerico/">Jogo do 15 de Sam Loyd</a><span>Quebra-cabeça deslizante com explicação matemática via grupo de permutações da impossibilidade de solução da metade das possibilidades.</span></li>
     </ul>
 
     <h3>Matemática Financeira</h3>
